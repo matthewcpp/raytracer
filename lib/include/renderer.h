@@ -1,5 +1,8 @@
 #pragma once
 
+#include "camera.h"
+#include "scene.h"
+
 #include "glm/vec2.hpp"
 #include "glm/vec4.hpp"
 
@@ -24,6 +27,12 @@ public:
 	@param size the new size of the rendering buffer.
 	*/
 	void setSize(const glm::uvec2 size);
+	
+	/**
+	Sets the scene that will be rendered
+	@param scene the scene to use for rendering.
+	*/
+	void setScene(Scene* scene) { scene_ = scene; }
 
 	/**
 	Clears out the image in the buffer.
@@ -41,7 +50,7 @@ public:
 	std::string name() const { return name_; }
 
 	/** Gets the dimensions of the renderer's buffer */
-	glm::uvec2 size() const { return size_; }
+	glm::ivec2 size() const { return size_; }
 
 	/** 
 	Returns a reference to the data buffer for this renderer.
@@ -50,11 +59,19 @@ public:
 	*/
 	const std::vector<glm::vec4>& data() const { return data_; }
 
+	/** Gets the camera associated with this renderer. */
+	Camera& camera() { return camera_;  }
+
+	/** Gets the scene associated with this renderer. */
+	Scene* scene() { return scene_; }
+
 private:
 	std::string name_;
-	glm::uvec2 size_;
+	glm::ivec2 size_;
 
 	std::vector<glm::vec4> data_;
+	Camera camera_;
+	Scene* scene_ = nullptr;
 };
 
 }
