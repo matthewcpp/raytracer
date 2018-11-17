@@ -1,0 +1,9 @@
+[requires]
+gtest/1.8.0@bincrafters/stable
+sdl2/2.0.8@bincrafters/stable
+yaml-cpp/0.6.2@bincrafters/stable
+glm/0.9.9.1@g-truc/stable
+stb/20180214@conan/stable
+
+[generators]
+cmake
