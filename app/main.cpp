@@ -1,13 +1,17 @@
 #include "library.h"
 #include "image_writer.h"
+#include "material.h"
 
 int main(int argc, char ** argv)
 {
 	raytracer::Library library;
 
 	auto scene = library.createScene("main");
-	scene->addSphere("sphere01", glm::vec3(0.0f, 0.0f, -1.0f), 0.5f);
-	scene->addSphere("sphere02", glm::vec3(0.0f, -100.5f, -1.0f), 100.0f);
+	auto spehere1 = scene->addSphere("sphere01", glm::vec3(0.0f, 0.0f, -1.0f), 0.5f);
+	spehere1->setMaterial(std::make_unique<raytracer::Diffuse>(glm::vec3(0.5f, 0.5f, 0.5f)));
+
+	auto spehere2 = scene->addSphere("sphere02", glm::vec3(0.0f, -100.5f, -1.0f), 100.0f);
+	spehere2->setMaterial(std::make_unique<raytracer::Diffuse>(glm::vec3(0.5f, 0.5f, 0.5f)));
 
 	auto renderer = library.createRenderer("main");
 	renderer->setAntialiasSampleCount(10);

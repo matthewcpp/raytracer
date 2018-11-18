@@ -2,15 +2,15 @@
 
 #include "camera.h"
 #include "scene.h"
+#include "util.h"
 
 #include "glm/vec2.hpp"
 #include "glm/vec4.hpp"
 
 #include <string>
-#pragma once
-
 #include <vector>
 #include <cstdint>
+#include <random>
 
 namespace raytracer
 {
@@ -72,6 +72,10 @@ public:
 	Scene* scene() { return scene_; }
 
 private:
+	glm::vec4 colorForRay(const Ray& ray, int bounce_count);
+	glm::vec3 randomPointInUnitSphere();
+
+private:
 	std::string name_;
 	glm::ivec2 size_;
 	uint32_t antialias_sample_count_ = 25;
@@ -79,6 +83,8 @@ private:
 	std::vector<glm::vec4> data_;
 	Camera camera_;
 	Scene* scene_ = nullptr;
+
+	
 };
 
 }

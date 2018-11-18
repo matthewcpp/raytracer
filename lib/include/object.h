@@ -1,21 +1,15 @@
 #pragma once
 
 #include "ray.h"
+#include "raycast_result.h"
+#include "material.h"
 
 #include <glm/glm.hpp>
 
+#include <memory>
+
 namespace raytracer
 {
-
-class Object;
-
-struct RaycastResult
-{
-	const Object* object = nullptr;
-	float t;
-	glm::vec3 position;
-	glm::vec3 normal;
-};
 
 enum ObjectType
 {
@@ -29,6 +23,12 @@ public:
 
 	virtual ObjectType type() const = 0;
 	virtual bool hit(const Ray& ray, float t_min, float t_max, RaycastResult& hit_result) const = 0;
+	
+	void setMaterial(std::unique_ptr<Material> material) { material_ = std::move(material); }
+	Material* material() const { return material_.get(); }
+
+protected:
+	std::unique_ptr<Material> material_;
 };
 
 class Sphere : public Object
