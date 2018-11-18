@@ -6,10 +6,11 @@ int main(int argc, char ** argv)
 	raytracer::Library library;
 
 	auto scene = library.createScene("main");
-	scene->addSphere("sphere01", glm::vec3(-0.5f, 0.0f, -1.0f), 0.5f);
-	scene->addSphere("sphere02", glm::vec3(0.5f, 0.0f, -1.0f), 0.5f);
+	scene->addSphere("sphere01", glm::vec3(0.0f, 0.0f, -1.0f), 0.5f);
+	scene->addSphere("sphere02", glm::vec3(0.0f, -100.5f, -1.0f), 100.0f);
 
 	auto renderer = library.createRenderer("main");
+	renderer->setAntialiasSampleCount(10);
 	renderer->setSize(glm::uvec2(200, 100));
 	renderer->camera().height = 2.0;
 	renderer->camera().width = 4.0;

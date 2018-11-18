@@ -34,6 +34,9 @@ public:
 	*/
 	void setScene(Scene* scene) { scene_ = scene; }
 
+	/** Sets the number of samples to use for antialiasing.  Setting this value to zero will disable antialiasing*/
+	void setAntialiasSampleCount(uint32_t antialias_sample_count) { antialias_sample_count_ = antialias_sample_count_;}
+
 	/**
 	Clears out the image in the buffer.
 	The entire buffer will be set to the default transparent color.
@@ -52,6 +55,9 @@ public:
 	/** Gets the dimensions of the renderer's buffer */
 	glm::ivec2 size() const { return size_; }
 
+	/** Gets the number of samples to use for antialiasing. */
+	uint32_t antialias_sample_count() const { return antialias_sample_count_; }
+
 	/** 
 	Returns a reference to the data buffer for this renderer.
 	The two dimensional buffer is organized into a single array of pixels.  
@@ -68,6 +74,7 @@ public:
 private:
 	std::string name_;
 	glm::ivec2 size_;
+	uint32_t antialias_sample_count_ = 25;
 
 	std::vector<glm::vec4> data_;
 	Camera camera_;

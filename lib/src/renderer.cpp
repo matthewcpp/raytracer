@@ -1,6 +1,8 @@
 #include "renderer.h"
 #include "object.h"
 
+#include <random>
+
 namespace raytracer
 {
 
@@ -37,6 +39,12 @@ bool Renderer::render()
 		return false;
 	}
 
+	std::random_device random_device;
+	std::mt19937 twister(random_device());
+	std::uniform_real_distribution<> rand_real(0.0f, 1.0f);
+
+	uint32_t sample_count = std::max(antialias_sample_count_, 1U);
+
 	glm::vec2 f_size(size_);
 	glm::vec3 lower_left_corner(-camera_.width / 2.0f, -camera_.height / 2.0f, -1.0);
 
@@ -45,26 +53,28 @@ bool Renderer::render()
 
 	for (int j = size_.y - 1; j >= 0; j--) {
 		for (int i = 0; i < size_.x; i++) {
-			float u = i / f_size.x;
-			float v = j / f_size.y;
+			int index = (size_.y - 1 - j) * size_.x + i;
 
-			glm::vec3 ray_target = lower_left_corner + (u * horizontal) + (v * vertical);
-			glm::vec3 ray_dir = glm::normalize(ray_target - camera_.position);
+			glm::vec4 final_color(0.0f);
+			for (uint32_t s = 0; s < sample_count; s++){
+				float u = (i + static_cast<float>(rand_real(twister))) / f_size.x;
+				float v = (j + static_cast<float>(rand_real(twister))) / f_size.y;
 
-			int index = j * size_.x + i;
+				glm::vec3 ray_target = lower_left_corner + (u * horizontal) + (v * vertical);
+				glm::vec3 ray_dir = glm::normalize(ray_target - camera_.position);
 
-			Ray ray(camera_.position, ray_dir);
-			RaycastResult raycast_result;
+				Ray ray(camera_.position, ray_dir);
+				RaycastResult raycast_result;
 
-			if (scene_->raycast(ray, 0.0f, 1000.0f, raycast_result)) {
-				data_[index] = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+				if (scene_->raycast(ray, camera_.near, camera_.far, raycast_result)) {
+					final_color += 0.5f * (glm::vec4(raycast_result.normal, 1.0f) + glm::vec4(1.0f));
+				}
+				else {
+					final_color += color(camera_.position, ray_dir);
+				}
 			}
-			else {
-				data_[index] = color(camera_.position, ray_dir);
-			}
 
-			
-			
+			data_[index] = final_color / static_cast<float>(sample_count);
 		}
 	}
 

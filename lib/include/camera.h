@@ -12,6 +12,8 @@ struct Camera
 
 	float width = 4.0f;
 	float height = 2.0f;
+	float near = 0.01f;
+	float far = 100.0f;
 };
 
 }
