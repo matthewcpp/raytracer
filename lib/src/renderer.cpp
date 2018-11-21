@@ -58,14 +58,14 @@ bool Renderer::render()
 				final_color += colorForRay(ray, 0);
 			}
 
-			data_[index] = final_color / static_cast<float>(sample_count);
+			final_color /= static_cast<float>(sample_count);
+			data_[index] = final_color;
+			data_[index] = glm::vec4(std::sqrt(final_color.x), std::sqrt(final_color.y), std::sqrt(final_color.z), final_color.w);
 		}
 	}
 
 	return true;
 }
-
-
 
 glm::vec4 Renderer::colorForRay(const Ray& ray, int bounce_count)
 {

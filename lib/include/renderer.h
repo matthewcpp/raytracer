@@ -35,7 +35,7 @@ public:
 	void setScene(Scene* scene) { scene_ = scene; }
 
 	/** Sets the number of samples to use for antialiasing.  Setting this value to zero will disable antialiasing*/
-	void setAntialiasSampleCount(uint32_t antialias_sample_count) { antialias_sample_count_ = antialias_sample_count_;}
+	void setAntialiasSampleCount(uint32_t antialias_sample_count) { antialias_sample_count_ = antialias_sample_count;}
 
 	/**
 	Clears out the image in the buffer.
@@ -73,7 +73,6 @@ public:
 
 private:
 	glm::vec4 colorForRay(const Ray& ray, int bounce_count);
-	glm::vec3 randomPointInUnitSphere();
 
 private:
 	std::string name_;

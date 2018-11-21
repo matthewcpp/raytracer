@@ -13,7 +13,8 @@ class Material
 public:
 	enum Type 
 	{
-		diffuse
+		diffuse,
+		metal
 	};
 
 	virtual bool scatter(const Ray& ray_in, const RaycastResult& raycast_result, glm::vec3& attenuation, Ray& bounce) const = 0;
@@ -32,6 +33,23 @@ public:
 public:
 	virtual bool scatter(const Ray& ray_in, const RaycastResult& raycast_result, glm::vec3& attenuation, Ray& bounce) const override;
 	virtual Type type() const override { return Type::diffuse; }
+
+private:
+	glm::vec3 albedo_;
+};
+
+class Metal : public Material
+{
+public:
+	Metal(const glm::vec3& albedo) : albedo_(albedo) {}
+	Metal() : albedo_(0.5f, 0.5f, 0.5f) {}
+
+	void setAlbedo(const glm::vec3& albedo) { albedo_ = albedo; }
+	glm::vec3 albedo() const { return albedo_; }
+
+public:
+	virtual bool scatter(const Ray& ray_in, const RaycastResult& raycast_result, glm::vec3& attenuation, Ray& bounce) const override;
+	virtual Type type() const override { return Type::metal; }
 
 private:
 	glm::vec3 albedo_;
